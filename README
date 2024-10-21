@@ -1,10 +1,10 @@
-# Competitive Programming Templates
+Competitive Programming Templates
 
-This submodule was created to ensure that [@Hjalte01](https://github.com/Hjalte01) and I have synchronized C++ template files for our competitive programming competitions. By using the same template, we avoid issues and ensure we both have access to the same functions during contests.
+This submodule was created to ensure that Hjalte01 (https://github.com/Hjalte01) and I have synchronized C++ template files for our competitive programming competitions. By using the same template, we avoid issues and ensure we both have access to the same functions during contests.
 
-## Repository Links
+Repository Links
 
-- [Main Repository](https://github.com/simonsejse/competitive-programming)
-- [Template Repository](https://github.com/simonsejse/competitive-programming-templates)
+- Main Repository: https://github.com/simonsejse/competitive-programming
+- Template Repository: https://github.com/simonsejse/competitive-programming-templates
 
 Happy coding! 🚀

@@ -164,7 +164,7 @@ typedef string str;
 /* clang-format on */
 #define ONLINE_JUDGE 1
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
 #ifndef ONLINE_JUDGE
   freopen("input.txt", "r", stdin);   // input.txt
@@ -173,5 +173,6 @@ int main(int argc, char* argv[]) {
   ll a;
   read(a);
   print(a, NL);
+
   return 0;
 }

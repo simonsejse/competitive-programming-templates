@@ -171,8 +171,7 @@ int main(int argc, char* argv[]) {
   freopen("input.txt", "r", stdin);   // input.txt
   freopen("output.txt", "w", stdout); // output.txt
 #endif
-  ll a;
-  read(a);
-
+  ll_read(a);
+  
   return 0;
 }

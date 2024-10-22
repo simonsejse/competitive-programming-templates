@@ -173,6 +173,6 @@ int main(int argc, char* argv[]) {
 #endif
   ll a;
   read(a);
-  print(a, NL);
+
   return 0;
 }

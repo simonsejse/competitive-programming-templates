@@ -39,7 +39,6 @@ using namespace std;
 
 /* 2. FUNCTIONS */
 #define ll_read(...) ll __VA_ARGS__; read(__VA_ARGS__)
-#define int_read(...) int __VA_ARGS__; read(__VA_ARGS__)
 void read() {}
 template <typename T, typename... Args>
 void read(T& first, Args&... args) { std::cin >> first; read(args...); }

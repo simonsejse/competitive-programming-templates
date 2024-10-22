@@ -20,6 +20,8 @@
 
 using namespace std;
 
+#pragma region Core Library
+
 /* clang-format off */
 
 /* 1. TYPES  */
@@ -156,6 +158,8 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 typedef string str;
+
+#pragma endregion
 
 /* clang-format on */
 #define ONLINE_JUDGE 1

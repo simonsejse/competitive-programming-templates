@@ -34,9 +34,16 @@ using namespace std;
 #define vll vector<long long>
 #define vpsi vector<pair<string, int>>
 #define mii map<int, int>
+#define mci map<char, int>
+#define msi map<string, int>
+#define mss map<string, string>
+#define msl map<string, long long>
+#define mls map<long long, string>
 #define si set<int>
 #define sc set<char>
-
+#define ss set<string>
+#define sl set<long long>
+  
 /* 2. FUNCTIONS */
 #define ll_read(...) ll __VA_ARGS__; read(__VA_ARGS__)
 #define str_read(...) string __VA_ARGS__; read(__VA_ARGS__)

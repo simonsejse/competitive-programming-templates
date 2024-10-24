@@ -38,6 +38,10 @@ using namespace std;
 #define sc set<char>
 
 /* 2. FUNCTIONS */
+#define int_read(...) int __VA_ARGS__; read(__VA_ARGS__)
+#define dbl_read(...) double __VA_ARGS__; read(__VA_ARGS__)
+#define ll_read(...) ll __VA_ARGS__; read(__VA_ARGS__)
+#define str_read(...) string __VA_ARGS__; read(__VA_ARGS__)
 void read() {}
 template <typename T, typename... Args>
 void read(T& first, Args&... args) { std::cin >> first; read(args...); }
@@ -164,15 +168,13 @@ typedef string str;
 /* clang-format on */
 #define ONLINE_JUDGE 1
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
 #ifndef ONLINE_JUDGE
   freopen("input.txt", "r", stdin);   // input.txt
   freopen("output.txt", "w", stdout); // output.txt
 #endif
-  ll a;
-  read(a);
-  print(a, NL);
+  ll_read(a);
 
   return 0;
 }

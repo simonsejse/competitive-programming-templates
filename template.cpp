@@ -40,6 +40,7 @@ using namespace std;
 /* 2. FUNCTIONS */
 #define dbl_read(...) double __VA_ARGS__; read(__VA_ARGS__)
 #define ll_read(...) ll __VA_ARGS__; read(__VA_ARGS__)
+#define char_read(...) char __VA_ARGS__; read(__VA_ARGS__)
 #define str_read(...) string __VA_ARGS__; read(__VA_ARGS__)
 void read() {}
 template <typename T, typename... Args>

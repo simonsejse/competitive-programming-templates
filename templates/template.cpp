@@ -46,9 +46,10 @@ using namespace std;
   
 /* 2. FUNCTIONS */
 #define strl_read(...) string __VA_ARGS__; getline(cin, __VA_ARGS__)
-#define ll_read(...) ll __VA_ARGS__; read(__VA_ARGS__)
-#define str_read(...) string __VA_ARGS__; read(__VA_ARGS__)
 #define dbl_read(...) double __VA_ARGS__; read(__VA_ARGS__)
+#define ll_read(...) ll __VA_ARGS__; read(__VA_ARGS__)
+#define char_read(...) char __VA_ARGS__; read(__VA_ARGS__)
+#define str_read(...) string __VA_ARGS__; read(__VA_ARGS__)
 void read() {}
 template <typename T, typename... Args>
 void read(T& first, Args&... args) { std::cin >> first; read(args...); }
@@ -151,6 +152,7 @@ void print(const T& first, const Args&... args) { print(first); print(args...); 
 #define MOD 1000000007
 #define PI 3.1415926535897932384626433832795
 #define NL "\n"
+#define NLL "\n\n"
 ll min(ll a,int b) { if (a<b) return a; return b; }
 ll min(int a,ll b) { if (a<b) return a; return b; }
 ll max(ll a,int b) { if (a>b) return a; return b; }

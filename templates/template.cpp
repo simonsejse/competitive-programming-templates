@@ -54,6 +54,14 @@ using namespace std;
 void read() {}
 template <typename T, typename... Args>
 void read(T& first, Args&... args) { std::cin >> first; read(args...); }
+void read_lines(std::string& line) {
+    std::getline(std::cin, line);
+}
+template <typename... Args>
+void read_lines(std::string& line, Args&... args) {
+    std::getline(std::cin, line);
+    read_lines(args...);  // recursively read each line
+}
 #define f(i,s,e) for(long long int i=s;i<e;i++)
 #define fop(s,i,op,e, inc) for(long long int i = s;i op e;i inc)
 #define pb push_back

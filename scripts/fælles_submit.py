@@ -150,17 +150,18 @@ def check_submission_status(submission_id, credentials):
 
 
 def move(solution_file):
+    os.system("git clone https://github.com/Hjalte01/competitive_programming.git")
+
     # Paths
     BASE_DIR = os.getcwd()  # Get current working directory (assumes it is cp-contest)
-    LOCAL_SIMON_REPO = os.path.join(BASE_DIR, ".simon", "competitive_programming")
-    SOLUTIONS_DIR_SIMON = os.path.join(LOCAL_SIMON_REPO, "solutions")
+    LOCAL_SIMON_REPO = os.path.join(BASE_DIR, "competitive_programming")
     solution_basename = os.path.basename(solution_file)
     destination = os.path.join(BASE_DIR, "done", solution_basename)
-
+    
     # Variables
     today_date = date.today().strftime('%Y-%m-%d')  # Use ISO format for consistency
     BRANCH_NAME = f"feature-{today_date}"  # Changed to avoid slashes
-    MAIN_REPO = "simonsejse/competitive-programming"  # Corrected repository name
+    MAIN_REPO = "simonsejse/competitive_programming"  # Corrected repository name
     COMMIT_MESSAGE = f"{solution_basename} finished and accepted!"
 
     # Ensure the local repository exists
@@ -176,85 +177,73 @@ def move(solution_file):
         print("Uncommitted changes detected. Please commit or stash them before running the script.")
         return
 
-    try:
-        # Perform Git operations
-        repo.remotes.origin.fetch()
+    if "upstream" not in [remote.name for remote in repo.remotes]: 
+        repo.create_remote("upstream", "https://github.com/simonsejse/competitive_programming.git")
+    upstream = repo.remotes.upstream
+    upstream.fetch()
 
-        # Check if 'upstream' remote exists before fetching
-        if 'upstream' in repo.remotes:
-            repo.remotes.upstream.fetch()
-            repo.git.checkout('main')
-            repo.git.merge('upstream/main')
-        else:
-            print("'upstream' remote not found. Skipping merge from upstream.")
-            repo.git.checkout('main')
-            repo.git.pull('origin', 'main')
+    branch = "main"
+    repo.git.checkout(branch)
 
-        # Checkout or create the feature branch
-        branch_names = [head.name for head in repo.heads]
-        if BRANCH_NAME in branch_names:
-            repo.git.checkout(BRANCH_NAME)
-        else:
-            repo.git.checkout('-b', BRANCH_NAME)
+    repo.git.merge("upstream/main")
 
-        # Copy the solution file to the solutions directory
-        source_solution_path = os.path.join(BASE_DIR, solution_file)
-        destination_solution_path = os.path.join(SOLUTIONS_DIR_SIMON, solution_basename)
-        shutil.copy2(source_solution_path, destination_solution_path)
-        print(f"Copied {source_solution_path} to {destination_solution_path}")
+    # now sync
 
-        # Add, commit, and push changes
-        relative_path = os.path.relpath(destination_solution_path, LOCAL_SIMON_REPO)
-        repo.index.add([relative_path])
-        print(f"Added {relative_path} to the index.")
 
-        repo.index.commit(COMMIT_MESSAGE)
-        print(f"Committed changes with message: {COMMIT_MESSAGE}")
 
-        # Push the new branch to origin
-        print(f"Pushing branch {BRANCH_NAME} to origin...")
-        push_result = repo.git.push('--set-upstream', 'origin', BRANCH_NAME)
-        print(push_result)
 
-        # Create a pull request using the GitHub CLI
-        # Ensure GitHub CLI is installed and authenticated
 
-        # Prepare the commands
-        pr_list_cmd = [
-            'gh', 'pr', 'list',
-            '--repo', MAIN_REPO,
-            '--json', 'title'
-        ]
-        pr_create_cmd = [
-            'gh', 'pr', 'create',
-            '--repo', MAIN_REPO,
-            '--title', BRANCH_NAME,
-            '--body', 'Automatically generated PR',
-            '--head', f"{repo.remote().url.split('/')[-2]}:{BRANCH_NAME}",  # Specify the head correctly
-            '--base', 'main'
-        ]
+    # Checkout or create the feature branch
+    branch_names = [head.name for head in repo.heads]
+    if BRANCH_NAME in branch_names:
+        repo.git.checkout(BRANCH_NAME)
+    else:
+        repo.git.checkout('-b', BRANCH_NAME)
 
-        # Execute the pr list command
-        pr_list_result = subprocess.run(
-            pr_list_cmd,
-            cwd=LOCAL_SIMON_REPO,
-            capture_output=True,
-            text=True
-        )
 
-        if pr_list_result.returncode != 0:
-            print(f"Failed to list pull requests: {pr_list_result.stderr}")
-            return
 
-        pr_list_output = pr_list_result.stdout
-        prs = json.loads(pr_list_output)
-        pr_exists = any(pr['title'] == BRANCH_NAME for pr in prs)
 
-        if not pr_exists:
-            # Create the pull request
+    # Copy the solution file to the solutions directory
+    source_solution_path = os.path.join(BASE_DIR, solution_file)
+    destination_solution_path = os.path.join(LOCAL_SIMON_REPO, solution_basename)
+    shutil.copy2(source_solution_path, destination_solution_path)
+    print(f"Copied {source_solution_path} to {destination_solution_path}")
+
+    # Add, commit, and push changes
+    relative_path = os.path.relpath(destination_solution_path, LOCAL_SIMON_REPO)
+    repo.index.add([relative_path])
+    print(f"Added {relative_path} to the index.")
+
+    repo.index.commit(COMMIT_MESSAGE)
+    print(f"Committed changes with message: {COMMIT_MESSAGE}")
+
+    # Create a pull request using the GitHub CLI
+    # Ensure GitHub CLI is installed and authenticated
+
+    def create_pull_request_from_fork(repo, branch_name, upstream_repo, fork_repo_url):
+        """
+        Create a pull request from the current branch in the forked repo to the upstream repository.
+        """
+        try:
+            # Step 1: Ensure the local branch is pushed to your fork
+            print(f"Pushing branch {branch_name} to your fork...")
+            repo.git.push('origin', branch_name)
+
+            # Step 2: Create the pull request using GitHub CLI
+            print("Creating a pull request to the upstream repository...")
+            pr_create_cmd = [
+                'gh', 'pr', 'create',
+                '--repo', upstream_repo,  # Targeting the upstream repository
+                '--title', branch_name,
+                '--body', 'Automatically generated PR from the fork.',
+                '--head', f"{repo.remote().url.split('/')[-2]}:{branch_name}",  # Specify your fork and branch
+                '--base', 'main'  # Base branch to merge into (adjust if different)
+            ]
+
+            # Execute the PR creation command
             pr_create_result = subprocess.run(
                 pr_create_cmd,
-                cwd=LOCAL_SIMON_REPO,
+                cwd=repo.working_tree_dir,
                 capture_output=True,
                 text=True
             )
@@ -262,17 +251,13 @@ def move(solution_file):
                 print("Pull request created successfully.")
             else:
                 print(f"Failed to create pull request: {pr_create_result.stderr}")
-        else:
-            print("PR already exists. Pushed new commits to update the PR.")
 
-        # Checkout back to main
-        repo.git.checkout('main')
-    except GitCommandError as e:
-        print(f"Git command failed: {e}")
-        repo.git.checkout('main')
-        # Clean up the branch if it was created
-        if BRANCH_NAME in [head.name for head in repo.heads]:
-            repo.git.branch('-D', BRANCH_NAME)
+        except GitCommandError as e:
+            print(e)
+
+    create_pull_request_from_fork(repo, BRANCH_NAME, "simonsejse/competitive_programming", "https://github.com/Hjalte01/competitive_programming.git")
+
+    os.system("rm -rf competitive_programming")
 
     # Move the solution file to 'done' directory for your friend
     if os.path.exists(solution_file):
@@ -280,6 +265,8 @@ def move(solution_file):
         print(f"Moved {solution_file} to {destination}")
     else:
         print(f"Error: The file {solution_file} was not found during move.")
+
+    os.system("rm -rf competitive_programming")
 
     today_date = date.today().strftime('%d-%m-%Y')
 

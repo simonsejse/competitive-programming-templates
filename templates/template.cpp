@@ -43,7 +43,7 @@ using namespace std;
 #define si set<int>
 #define sc set<char>
 #define ss set<string>
-#define sl set<long long>
+#define sll set<long long>
   
 /* 2. FUNCTIONS */
 #define strl_read(...) string __VA_ARGS__; getline(cin, __VA_ARGS__)
@@ -51,9 +51,18 @@ using namespace std;
 #define ll_read(...) ll __VA_ARGS__; read(__VA_ARGS__)
 #define char_read(...) char __VA_ARGS__; read(__VA_ARGS__)
 #define str_read(...) string __VA_ARGS__; read(__VA_ARGS__)
-void read() {}
+template <typename T>
+bool read(T& first) {
+    return static_cast<bool>(std::cin >> first);
+}
+
 template <typename T, typename... Args>
-void read(T& first, Args&... args) { std::cin >> first; read(args...); }
+bool read(T& first, Args&... args) {
+    if (!(std::cin >> first)) 
+        return false; 
+    return read(args...); 
+}
+
 void read_lines(std::string& line) {
     std::getline(std::cin, line);
 }

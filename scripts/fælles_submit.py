@@ -192,11 +192,11 @@ def move(solution_file):
 
 
 
-
+    branch_exists_origin = f"origin/{BRANCH_NAME}" in [ref.name for ref in repo.remotes.origin.refs]
     # Checkout or create the feature branch
-    branch_names = [head.name for head in repo.heads]
-    if BRANCH_NAME in branch_names:
+    if branch_exists_origin:
         repo.git.checkout(BRANCH_NAME)
+        print("\n\n\nit does work\n\n\n")
     else:
         repo.git.checkout('-b', BRANCH_NAME)
 
